@@ -29,8 +29,10 @@ class Player {
     //stroke(0);
     //strokeWeight(2);
     //fill(0,127);
-    image(stickman[frame], position.x, position.y-h,w,h);
+ 
     //rect(position.x,position.y-h,w,h);
+    imageMode(CORNER);
+    image(stickman[frame], position.x, position.y-h,w,h);
   }
 
   void checkEdges() {
