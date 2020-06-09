@@ -7,8 +7,8 @@ class Player {
   float h;
 
   Player() {
-    w=50;
-    h=70;
+    w=56;
+    h=83;
     position = new PVector(40, height);
     velocity = new PVector(3,0);
     acceleration = new PVector(0.01,0);
@@ -25,11 +25,12 @@ class Player {
     acceleration.mult(0);
   }
 
-  void display() {
-    stroke(0);
-    strokeWeight(2);
-    fill(0,127);
-    rect(position.x,position.y-h,w,h);
+  void display(int frame) {
+    //stroke(0);
+    //strokeWeight(2);
+    //fill(0,127);
+    image(stickman[frame], position.x, position.y-h,w,h);
+    //rect(position.x,position.y-h,w,h);
   }
 
   void checkEdges() {

@@ -1,13 +1,14 @@
 Player player;
 Obstacle[] obstacles= new Obstacle[6];
+PImage[] stickman = new PImage[9];
 boolean flying=false;
-PImage gameover;
 float scoreNumber=0;
+float frame=0;
 void setup() {
-  //size(1000, 500);
+  size(1000, 500);
   frameRate(60);
 
-    fullScreen();
+    //fullScreen();
   player =new Player();
  
   for (int i=0; i<obstacles.length; i++) {
@@ -20,35 +21,32 @@ void setup() {
     //PVector temp = new PVector(x, height);
     obstacles[i]=new Obstacle(new PVector(x, height));
   }
-   gameover = loadImage("gameover.png");
+  for(int i=0; i<stickman.length; i++){
+    stickman[i] = loadImage("frame_"+i+"_delay-0.05s.gif");
+  }
 }
 
 
 void draw() {
+
   background(255);
   scoreNumber+=0.1;
   PVector gravity = new PVector(0, 0.3);
-
   player.applyForce(gravity);
-
   player.update();
   translate(50-player.position.x, 0);
   player.checkEdges();
-
-  player.display();
+  
+  showScore(player.position.x-player.w);
+  playerAnimation();
+  
   int i;
   for (i=0; i<obstacles.length; i++) {
     float origin=player.position.x-player.w;
     obstacles[i].display(); 
     obstacles[i].update(player);
     if (obstacles[i].hitPlayer(player)) {
-      background(126);
-      image(gameover, origin, 0,width,height);
-      textSize(140);
-      fill(255);
-      String score="Score is "+ (int) scoreNumber;
-      float textWidth=textWidth(score);
-      text(score, origin+width/2-textWidth/2, height*5/6); 
+       gameOver(origin);
       noLoop();
       break;
     }
@@ -66,4 +64,34 @@ void keyPressed() {
     player.applyForce(sweepDown);
     
   }
+}
+void gameOver(float origin){
+      background(0);
+      textSize(180);
+      fill(255,0,0);
+      String gameover="Game Over";
+      float gameoverWidth=textWidth(gameover);
+      text(gameover, origin+width/2-gameoverWidth/2, height*2/5); 
+      textSize(140);
+      fill(255);
+      String score="Score is "+ (int) scoreNumber;
+      float scoreWidth=textWidth(score);
+      text(score, origin+width/2-scoreWidth/2, height*5/6); 
+}
+void playerAnimation(){
+    if(frame<stickman.length){
+    player.display(floor(frame));
+    frame+=(player.velocity.x*(0.05));
+    
+  }else{
+    frame=0;
+    player.display(floor(frame));
+  }
+}
+void showScore(float origin){
+      textSize(30);
+      fill(0);
+      String score="Score: "+ (int) scoreNumber;
+      float scoreWidth=textWidth(score);
+      text(score, origin+width-scoreWidth, 30); 
 }

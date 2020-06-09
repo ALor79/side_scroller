@@ -24,8 +24,11 @@ class Obstacle{
 
     if ((playerLeft<= thisRight && playerRight >= thisLeft ) || (thisLeft <= playerRight && thisRight >= playerLeft)) {
       float playerDown = height-player.position.y;
-      float thisUp = h;
-      if (playerDown <= thisUp) {
+      println("this left ="+thisLeft);
+      println("this right ="+thisRight);
+      println("players left ="+playerLeft);
+      println("players right ="+playerRight);
+      if (playerDown <= h) {
         return true;
         
       }
