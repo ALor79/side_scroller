@@ -1,10 +1,12 @@
 Player player;
-Obstacle[] obstacles= new Obstacle[6];
+Obstacle[] obstacles= new Obstacle[5];
 PImage[] stickman = new PImage[9];
 boolean flying=false;
 float scoreNumber=0;
 float frame=0;
 PImage blackHole;
+boolean finished=false;
+ResetButton rb;
 void setup() {
   size(1000, 500);
   frameRate(60);
@@ -14,7 +16,7 @@ void setup() {
 
   for (int i=0; i<obstacles.length; i++) {
 
-    float x=1000+random(200);
+    float x=width+random(200);
 
     if (i!=0) {
       x=obstacles[i-1].position.x+random(150, 450);
@@ -45,12 +47,13 @@ void draw() {
 
   showScore(player.position.x-player.w);
   playerAnimation();
-  
+
   int i;
   for (i=0; i<obstacles.length; i++) {
     float origin=player.position.x-player.w;
     obstacles[i].display();
     //obstacleAnimation(i);
+    //obstacles[i].rotation();
     obstacles[i].update(player);
     if (obstacles[i].hitPlayer(player)) {
       gameOver(origin);
@@ -61,27 +64,29 @@ void draw() {
 }
 void keyPressed() {
   if (key == ' ' && !flying ) {
-    PVector jump=new PVector(0, -10);
+    PVector jump=new PVector(0, -12);
     player.applyForce(jump);
     flying=true;
   } else if (key == 'c' && flying) {
-    PVector sweepDown=new PVector(0, 3);
+    PVector sweepDown=new PVector(0, 6);
     player.applyForce(sweepDown);
   }
 }
 void gameOver(float origin) {
-  
-  background(0);
-  textSize(180);
+  finished=true;
+  background(168);
+  textSize(140);
   fill(255, 0, 0);
   String gameover="Game Over";
   float gameoverWidth=textWidth(gameover);
   text(gameover, origin+width/2-gameoverWidth/2, height*2/5); 
-  textSize(140);
+  textSize(100);
   fill(255);
   String score="Score is "+ (int) scoreNumber;
   float scoreWidth=textWidth(score);
-  text(score, origin+width/2-scoreWidth/2, height*5/6);
+  text(score, origin+width/2-scoreWidth/2, height*2/3);
+  rb=new ResetButton(new PVector(500/3, 500/5));
+  rb.show(origin);
 }
 void playerAnimation() {
   if (frame<stickman.length) {
@@ -109,3 +114,10 @@ void showScore(float origin) {
 //    //obstacles[i].display();
 //  }
 //}
+void mousePressed() {
+
+  if (finished) {
+    rb.clicked(mouseX, mouseY);
+    redraw();
+  }
+}

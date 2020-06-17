@@ -3,6 +3,7 @@ class Obstacle {
   //float w;
   float radius;
   float frame;
+  float angle;
   Obstacle(float r,PVector pos) {
     frame=0;
     radius=r;
@@ -15,8 +16,10 @@ class Obstacle {
     //fill(250, 0, 0);
     ////ellipseMode(CENTER);
     //ellipse(position.x, position.y, radius*2, radius*2);
+
     imageMode(CENTER);
     image(blackHole, position.x, position.y,radius*2,radius*2);
+
   }
 
   boolean hitPlayer(Player player) {
@@ -25,7 +28,7 @@ class Obstacle {
     //float playerRight = player.position.x + player.w;
     //float thisLeft = position.x  ;
     //float thisRight = position.x + w;
-    float d=dist(player.position.x, player.position.y, position.x, position.y);
+    float d=dist(player.position.x+10, player.position.y, position.x, position.y);
     float d2=dist(player.position.x+player.w, player.position.y, position.x, position.y);
     if ((d<=radius+0.1 ) || (d2<=radius+0.1)) {
       return true;
@@ -38,6 +41,7 @@ class Obstacle {
     if (thisRight+player.w<player.position.x) {
       radius=random(25,40);
       position=new PVector(player.position.x+width+random(100), height-random(25,40));
+      angle+=0.1;
     }
   }
 }
